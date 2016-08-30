@@ -54,23 +54,35 @@ class ActivityCalculator {
 			return false;
 		}
 
-		bool validWeight(float weight) {
-			if(isdigit(weight)) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-
 		//calulates cals burned based on activity and weight in lbs
-		float getCaloriesBurned(string activity, float weight) {
+		float getCaloriesBurned(string activity, int minutes, float weight) {
 			const float FORMULA = 0.0175;
 			float kgWeight = convertLbToKg(weight);
 			float MET = getMET(activity);
-			float caloriesBurned = (FORMULA * MET) * kgWeight;
+			float caloriesBurned = minutes*( (FORMULA * MET) * kgWeight);
 			
 			return caloriesBurned;
 		}
+};
+
+class Helper {
+	public:
+		Helper() {}		
+
+		float loopTillValidNumber(istream& stream) {
+			float weight;
+			
+			stream >> weight;
+			
+			while(!weight) {
+				cout << "\n ERROR, enter a number:";
+				stream.clear();
+				stream.ignore(256, '\n');
+				stream >> weight;
+			}
+			return weight;
+		}
+
 };
 
 
@@ -78,7 +90,9 @@ int main() {
 	string activity;
 	float weight;
 	float caloriesBurned;
+	int minutes;
 	ActivityCalculator activityCalc;
+	Helper helper;
 
 	cout << "Hello Welcome to Calorie Counter";
 
@@ -91,15 +105,14 @@ int main() {
 	// get weight from user 
 	// @@dev validation
 	cout << "Please enter weight in lbs\n";
-	cin >> weight;
-    	while (!cin) {
-        	cout << "\n ERROR, enter a number\n" ;
-        	cin.clear();
-        	cin.ignore(256,'\n');
-        	cin >> weight;
-	}
+    	weight = helper.loopTillValidNumber(cin);
 
-	caloriesBurned = activityCalc.getCaloriesBurned(activity, weight);
+	cout << "Enter amount of time spent on activity in minutes \n";
+	minutes = helper.loopTillValidNumber(cin);
+
+	caloriesBurned = activityCalc.getCaloriesBurned(activity, minutes, weight);
 
 	cout << "Congrats, you burned " << caloriesBurned << " calories!\n";
+
+	return 0;
 }
