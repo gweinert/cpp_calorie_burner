@@ -12,6 +12,7 @@ using namespace std;
 
 class ActivityCalculator {
 	private:
+		const float FORMULA = 0.0175;
 		float MET;
 		float weight;
 		string activity;
@@ -49,7 +50,16 @@ class ActivityCalculator {
 		bool validActivity(string activity) {
 			if(getMET(activity) != 0) {
 				return true;
-			} else return false;
+			}
+			return false;
+		}
+
+		bool validWeight(float weight) {
+			if(isdigit(weight)) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 
 		//calulates cals burned based on activity and weight in lbs
@@ -74,14 +84,20 @@ int main() {
 
 	// grab valid activity from user
 	do {
-		cout << "Please enter one of the below \n 1. SLEEPING \n 2. RUNNING \n 3. BASKETBALL \n";
+		cout << "Please enter one of the below \n 1. SLEEPING \n 2. WALKING \n 3. BASKETBALL \n";
 		cin >> activity;
 	} while(!activityCalc.validActivity(activity));
 
 	// get weight from user 
 	// @@dev validation
-	cout << "Please enter your weight in lbs \n";
+	cout << "Please enter weight in lbs\n";
 	cin >> weight;
+    	while (!cin) {
+        	cout << "\n ERROR, enter a number\n" ;
+        	cin.clear();
+        	cin.ignore(256,'\n');
+        	cin >> weight;
+	}
 
 	caloriesBurned = activityCalc.getCaloriesBurned(activity, weight);
 
