@@ -17,7 +17,7 @@ class ActivityCalculator {
 		string activity;
 		map<string, int> activities = {
 			{ "SLEEPING", 1 },
-			{ "RUNNING", 2 },
+			{ "WALKING", 2 },
 			{ "BASKETBALL", 8 }	
 		};
 
@@ -34,14 +34,15 @@ class ActivityCalculator {
 		}
 
 		//didnt feel like doing for loop
+		//converts a string to all uppercase
 		string upCase(string str) {
 			transform(str.begin(), str.end(),str.begin(), ::toupper);
-			// cout << " string was capitalize to " << str;
 			return str;
 		}
 
 	public:
 
+		//constructor
 		ActivityCalculator() {
 		}
 
@@ -53,9 +54,10 @@ class ActivityCalculator {
 
 		//calulates cals burned based on activity and weight in lbs
 		float getCaloriesBurned(string activity, float weight) {
+			const float FORMULA = 0.0175;
 			float kgWeight = convertLbToKg(weight);
 			float MET = getMET(activity);
-			float caloriesBurned = (2.0 * MET) * weight;
+			float caloriesBurned = (FORMULA * MET) * kgWeight;
 			
 			return caloriesBurned;
 		}
@@ -83,5 +85,5 @@ int main() {
 
 	caloriesBurned = activityCalc.getCaloriesBurned(activity, weight);
 
-	cout << "Congrats, you burned " << caloriesBurned << "calories!\n";
+	cout << "Congrats, you burned " << caloriesBurned << " calories!\n";
 }
